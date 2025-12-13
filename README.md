@@ -1,1 +1,1 @@
-# mental-health-chatbot
+# Kindred-AI-Plus
