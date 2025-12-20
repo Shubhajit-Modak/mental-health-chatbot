@@ -1,3 +1,6 @@
+//MAIN PAGE JS
+
+
 // --- CONFIGURATION ---
         // Replace 'Rishikesh Majumder' with the actual user name for personalized greetings
         const CHAT_CONTAINER = document.getElementById('chatContainer');
@@ -257,4 +260,5 @@
         }
 
         // Run the initialization
+
         window.onload = init;
