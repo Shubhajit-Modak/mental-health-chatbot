@@ -1,4 +1,7 @@
-    const trigger = document.getElementById('menuTrigger');
+//THREE DOT MENU JS
+
+
+const trigger = document.getElementById('menuTrigger');
     const panel = document.getElementById('threeDotPanel');
     const overlay = document.getElementById('overlay');
     const closeBtn = document.getElementById('closeBtn');
@@ -50,4 +53,5 @@
         const inside = panel.contains(e.target) || trigger.contains(e.target);
         if(!inside) closeMenu();
       }
+
     });
