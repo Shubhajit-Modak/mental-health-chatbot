@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindred AI.com</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="chatbo_main_page.css">
+    <link rel="stylesheet" href="menu.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="upgrade-button">Upgrade to Kindred AI Plus</div>
+
+        <!-- Trigger (three vertical dots) -->
+
+        <button class="menu-trigger" id="menuTrigger" aria-expanded="false" aria-controls="threeDotPanel"
+            title="Open menu">
+            <span class="dots" aria-hidden="true">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </span>
+            <span class="sr-only"></span>
+        </button>
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Sliding panel -->
+        <aside class="panel" id="threeDotPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle"
+            style="display: flex; flex-direction: column; height: 100vh;">
+            <header>
+                <h3 id="panelTitle">Quick Menu</h3>
+                <button class="close-btn" id="closeBtn" aria-label="Close menu">✕</button>
+            </header>
+
+            <nav style="flex-grow: 1; display: flex; flex-direction: column;">
+                <ul class="menu-list" style="flex-grow: 1;">
+                    <li><a href="#profile">👤 Profile</a></li>
+                    <li onclick="togglelist()">🧑‍🚀 Characters</li>
+                    <ul id="characterlist" class="sub-list">
+                        <li><a href="#Bob">Bob (Mental Health)</a></li>
+                        <li><a href="#Sara">Sara (English Learning)</a></li>
+                        <li><a href="#Cristiana">Cristiana (The Strategist)</a></li>
+                        <li><a href="#Aryan">Aryan (The Historian)</a></li>
+                        <li><a href="#Maya">Maya (The Creative)</a></li>
+                        <li><a href="#Amar">Amar (The Technologist)</a></li>
+                    </ul>
+                    <li><a href="#help">❓ Help & feedback</a></li>
+                    <li><a href="#settings">⚙️ Settings</a></li>
+                </ul>
+
+                <ul class="menu-list">
+                    <li><a href="#logout" style="color: #ef4444;">🚫 Log out</a></li>
+                </ul>
+            </nav>
+
+            <div style="padding: 90px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0;">
+                Version 1.0
+            </div>
+        </aside>
+    </header>
+
+    <d iv class="chat-container" id="chatContainer">
+        <div class="message-row bot-row" style="animation-delay: 0.1s;">
+            <div class="message-bubble" id="initialBotMessage">
+                Hi
+            </div>
+        </div>
+        </div>
+
+        <footer class="input-bar-wrapper">
+            <div class="input-bar">
+
+                <div class="dropdown-container" id="companionDropdownContainer">
+                    <span class="material-icons input-icon" id="toolsIcon">tune</span>
+                    <div class="dropdown-content" id="companionDropdown">
+                        <div class="dropdown-title">Select your companion</div>
+                        <div class="dropdown-item selected" data-char="None">Standard AI</div>
+                        <div class="dropdown-item" data-char="Bob">Bob (Mental Health)</div>
+                        <div class="dropdown-item" data-char="Sara">Sara (English Learning)</div>
+                        <div class="dropdown-item" data-char="Cristiana">Cristiana (The Strategist)</div>
+                        <div class="dropdown-item" data-char="Aryan">Aryan (The Historian)</div>
+                        <div class="dropdown-item" data-char="Maya">Maya (The Creative)</div>
+                        <div class="dropdown-item" data-char="Amar">Amar (The Technologist)</div>
+                    </div>
+                </div>
+
+                <textarea class="input-field" id="messageInput" placeholder="Ask your companion..." rows="1"></textarea>
+                <div class="send-icon">
+                    <span class="material-icons input-icon" id="sendButton">send</span>
+                </div>
+                <div class="mic-icons">
+                    <span class="material-icons input-icon" id="micIcon">mic</span>
+                </div>
+
+                <div class="mode-container" id="modeDropdownContainer">
+                    <div class="mode-display" id="modeDisplay">
+                        <span id="currentMode">Fast</span>
+                        <span class="material-icons">arrow_drop_down</span>
+                    </div>
+                    <div class="mode-content" id="modeDropdown">
+                        <div class="dropdown-item selected" data-mode="Fast">Fast</div>
+                        <div class="dropdown-item" data-mode="Balanced">Balanced</div>
+                        <div class="dropdown-item" data-mode="Detailed">Detailed</div>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+        <script src="chatbo_main_page.js"></script>
+        <script src="menu.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+        /* GLOBAL STYLES & RESET */
+        
+         :root {
+            /* Color Palette (Dark Mode inspired by modern AI interfaces) */
+            --bg-color: #0b0f19;
+            /* Very dark blue/black background */
+            --main-text: #e0e6f0;
+            /* Light off-white for text */
+            --secondary-text: #9aa0a6;
+            /* Grey for secondary text */
+            --input-bg: #1c2333;
+            /* Darker blue for input field/bar */
+            --user-bubble: #3476f6;
+            /* Bright blue for user messages */
+            --bot-bubble: #273042;
+            /* Medium dark blue for bot messages */
+            --accent-color: #55c2da;
+            /* Cyan-blue for upgrade button/icons */
+            --border-color: #3b4255;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            /* Prevent body scroll, let chat area handle it */
+        }
+        /* HEADER / TOP BAR */
+        
+        .header {
+           position:relative ;
+            display: flex;                                                                                                                                                                                              
+            align-items:center;
+            padding: 12px 16px;
+            /* Dummy border to separate from chat area */
+            border-bottom: 1px solid var(--border-color);
+            /* Prevents header from shrinking */
+            flex-shrink: 0;
+        }
+        
+        .upgrade-button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .upgrade-button:hover {
+            background-color: #9eecff;
+        }
+
+        /* MAIN CHAT AREA */
+        
+        .chat-container {
+            flex-grow: 1;
+            /* Takes up all available space */
+            overflow-y: auto;
+            /* Scrollable chat history */
+            padding: 20px 20px 100px 20px;
+            /* Padding for the input bar */
+            scroll-behavior: smooth;
+            /* Max width for better reading experience */
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        /* Message Bubble Styles */
+        
+        .message-row {
+            display: flex;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-bubble {
+            max-width: 85%;
+            /* Slightly less than 90% to avoid crowding */
+            padding: 12px 18px;
+            border-radius: 20px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            /* Essential for long words/links */
+        }
+        
+        .bot-row {
+            justify-content: flex-start;
+        }
+        
+        .bot-row .message-bubble {
+            background-color: var(--bot-bubble);
+            border-top-left-radius: 5px;
+            /* Subtle change for bot */
+        }
+        
+        .user-row {
+            justify-content: flex-end;
+        }
+        
+        .user-row .message-bubble {
+            background-color: var(--user-bubble);
+            color: white;
+            /* Contrast for bright blue */
+            border-top-right-radius: 5px;
+            /* Subtle change for user */
+        }
+        /* INPUT BAR / FOOTER */
+        
+        .input-bar-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+        }
+        
+        .input-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 700px;
+            /* Slightly narrower than chat container */
+            background-color: var(--input-bg);
+            border-radius: 25px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-field {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            color: var(--main-text);
+            padding: 10px 15px;
+            font-size: 1rem;
+            resize: none;
+            /* Prevent manual resizing */
+            outline: none;
+            /* Remove focus outline */
+            max-height: 200px;
+            /* Max height for multiline input */
+            overflow-y: auto;
+            /* Scroll if content exceeds max height */
+        }
+/*send icon*/
+        .send-icon {
+            color: var(--secondary-text);
+            cursor: pointer;
+            padding: 8px;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        
+        .send-icon:hover {
+            color: var(--main-text);
+        }
+        /*mic icon*/
+        .mic-icons{
+            color: var(--secondary-text);
+            font-size:20px;
+            cursor:pointer;
+        }
+        .mic-icons.active{
+            color: red;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .mic-icons:hover {
+            color: var(--main-text);
+        }
+        /* DROPDOWN STYLES */
+        
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            /* Position above the tools icon */
+            left: 0;
+            background-color: var(--input-bg);
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            /* Space between icon and dropdown */
+            padding: 5px 0;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+        }
+        
+        .dropdown-title {
+            color: var(--secondary-text);
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .dropdown-item {
+            color: var(--main-text);
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            font-size: 0.95rem;
+        }
+        
+        .dropdown-item:hover,
+        .dropdown-item.selected {
+            background-color: var(--bot-bubble);
+        }
+        /* FAST/BALANCED/DETAILED DROPDOWN (Right Side) */
+        
+        .mode-container {
+            position: relative;
+            margin-left: 5px;
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .mode-display {
+            color: var(--secondary-text);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--bot-bubble);
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .mode-display:hover {
+            background-color: #3b4255;
+        }
+        
+        .mode-display .material-icons {
+            font-size: 16px;
+            margin-left: 5px;
+        }
+        
+        .mode-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background-color: var(--input-bg);
+            min-width: 120px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .mode-content.show {
+            display: block;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 600px) {
+            .header {
+                padding: 10px 15px;
+            }
+            .upgrade-button {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .chat-container {
+                padding: 15px 15px 80px 15px;
+            }
+            .input-bar-wrapper {
+                padding: 10px;
+            }
+            .input-field {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
