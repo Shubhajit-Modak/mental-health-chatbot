@@ -1,4 +1,7 @@
-        /* GLOBAL STYLES & RESET */
+/* MAIN PAGE CSS */
+
+
+/* GLOBAL STYLES & RESET */
         
          :root {
             /* Color Palette (Dark Mode inspired by modern AI interfaces) */
@@ -317,4 +320,5 @@
                 padding: 8px 10px;
                 font-size: 0.9rem;
             }
+
         }
