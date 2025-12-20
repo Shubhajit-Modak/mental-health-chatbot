@@ -1,4 +1,7 @@
-    :root{
+/* THREE DOT MENU CSS */ 
+
+
+:root{
       --bg:#0f1724;
       --panel:var(--input-bg);
       --accent:#0ea5a4;
@@ -82,4 +85,5 @@
 
     /* responsive */
     @media (max-width:420px){.panel{width:86vw}}
+
   
