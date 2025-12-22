@@ -48,13 +48,21 @@
       transition:transform .70s ease, opacity .25s ease;
     }
 
+/* hidden by default for character list */
+.sub-list {
+    list-style-type: none;
+    display: none;
+    color: rgb(33, 32, 32);
+    padding-left: 20px;
+}
     /* off-canvas panel and overlay */
     .overlay{
       position:fixed; inset:0; background:rgba(2,6,23,0.4);
       opacity:0; pointer-events:none; transition:opacity .25s ease;
     }
     .panel{
-      position:fixed; top:0; right:0; height:100vh; width:320px;
+      position:fixed; top:0; right:0; height:100vh;
+      z-index: 9999;
       background:linear-gradient(180deg,#fff,#f8fafc);
       box-shadow:-20px 40px 80px rgba(2,6,23,0.12);
       transform:translateX(110%);
@@ -87,3 +95,4 @@
     @media (max-width:420px){.panel{width:86vw}}
 
   
+
