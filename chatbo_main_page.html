@@ -39,18 +39,22 @@
             </header>
 
             <nav style="flex-grow: 1; display: flex; flex-direction: column;">
-                <ul class="menu-list" style="flex-grow: 1;">
+ <ul class="menu-list" style="flex-grow: 1;">
                     <li><a href="#profile">👤 Profile</a></li>
-                    <li onclick="togglelist()">🧑‍🚀 Characters</li>
-                    <ul id="characterlist" class="sub-list">
-                        <li><a href="#Bob">Bob (Mental Health)</a></li>
-                        <li><a href="#Sara">Sara (English Learning)</a></li>
-                        <li><a href="#Cristiana">Cristiana (The Strategist)</a></li>
-                        <li><a href="#Aryan">Aryan (The Historian)</a></li>
-                        <li><a href="#Maya">Maya (The Creative)</a></li>
-                        <li><a href="#Amar">Amar (The Technologist)</a></li>
-                    </ul>
-                    <li><a href="#help">❓ Help & feedback</a></li>
+
+                    <li onclick="toggleList()" style="cursor:pointer;">
+                        🧑‍🚀 Characters
+                        <ul id="characterlist" class="sub-list">
+                            <li><a href="#Bob">👱Bob (Mental Health)</a></li>
+                            <li><a href="#Sara">👩‍🦰Sara (English Learning)</a></li>
+                            <li><a href="#Cristiana">👩‍💼Cristiana (The Strategist)</a></li>
+                            <li><a href="#Aryan">👨‍🏫Aryan (The Historian)</a></li>
+                            <li><a href="#Maya">👩‍🎨Maya (The Creative)</a></li>
+                            <li><a href="#Amar">👨‍💻Amar (The Technologist)</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#help">❓Help & feedback</a></li>
                     <li><a href="#settings">⚙️ Settings</a></li>
                 </ul>
 
@@ -114,7 +118,20 @@
         </footer>
         <script src="chatbo_main_page.js"></script>
         <script src="menu.js"></script>
+//for characters 
+            <script>
+        function toggleList() {
+            const list = document.getElementById("characterlist");
+
+            if (list.style.display === "block") {
+                list.style.display = "none"; // hide
+            } else {
+                list.style.display = "block"; // show
+            }
+        }
+    </script>
 </body>
 
 
 </html>
+
