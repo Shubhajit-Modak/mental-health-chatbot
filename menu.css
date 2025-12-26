@@ -1,98 +1,231 @@
-/* THREE DOT MENU CSS */ 
+/* THREE DOT MENU CSS */
+
+:root {
+    --bg: #0f1724;
+    --panel: var(--input-bg);
+    --accent: #0ea5a4;
+    --dot: #111827;
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    font-family: system-ui, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    padding: 40px;
+}
 
 
-:root{
-      --bg:#0f1724;
-      --panel:var(--input-bg);
-      --accent:#0ea5a4;
-      --dot:#111827;
-    }
-    *{box-sizing:border-box}
-    body{
-      font-family: system-ui, Arial, sans-serif;
-      min-height:100vh;
-      display:flex;
-      padding:40px;
-    }
+/* three-dot trigger */
 
-    /* three-dot trigger */
-    .menu-trigger{
-      position :absolute;
-      top:10px;
-      right:10px;
-      width:35px;
-      height:35px;
-      border-radius:10px;
-      background:var(--panel);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid rgba(15,23,42,0.06);
-      cursor:pointer;
-    }
-    /* sublist for characters */
-    .sublist{
-      display: none;
-      margin-left:20px;
-    }
+.menu-trigger {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    cursor: pointer;
+}
 
-    .dots{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      width:6px;
-      align-items:center;
-    }
-    .dot{
-      width:6px; height:6px; border-radius:50%; background:rgb(155, 155, 155);
-      transition:transform .70s ease, opacity .25s ease;
-    }
+
+/* sublist for characters */
+
+.sublist {
+    display: none;
+    margin-left: 20px;
+}
+
+.dots {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 6px;
+    align-items: center;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    transition: transform .70s ease, opacity .25s ease;
+}
+
+
+/* The parent container needs this so the dropdown stays attached to it */
+
+
+/* 1. Hide everything else when the menu is active */
+
+body.menu-open>*:not(nav) {
+    /* This assumes your list is inside a <nav> or specific header. 
+       Adjust the selector to target your main content wrapper. */
+    display: none !important;
+}
+
+
+/* 2. Make the dropdown container fill the entire screen */
+
+.dropdown-content.show {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 50%;
+    background-color: #fcf7f7;
+    /* Choose your desired background color */
+    z-index: 9999;
+    padding: 50px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+
+/* 3. Style the items for the new full-screen look */
+
+.dropdown-item {
+    padding: 20px;
+    color: rgb(4, 4, 4);
+    border-bottom: 1px solid #f8f1f1;
+    font-size: .75rem;
+}
+
 
 /* hidden by default for character list */
+
 .sub-list {
     list-style-type: none;
     display: none;
-    color: rgb(33, 32, 32);
+    color: rgb(246, 237, 237);
     padding-left: 20px;
 }
-    /* off-canvas panel and overlay */
-    .overlay{
-      position:fixed; inset:0; background:rgba(2,6,23,0.4);
-      opacity:0; pointer-events:none; transition:opacity .25s ease;
+
+
+/* off-canvas panel and overlay */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+
+.panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 200;
+    background: linear-gradient(180deg, #fff, #f8fafc);
+    box-shadow: -20px 40px 80px rgba(2, 6, 23, 0.12);
+    transform: translateX(110%);
+    transition: transform .35s cubic-bezier(.2, .9, .3, 1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-left: 1px solid rgba(2, 6, 23, 0.04);
+}
+
+
+/* Active state */
+
+.overlay.open {
+    opacity: 1;
+    pointer-events: auto
+}
+
+.panel.open {
+    transform: translateX(0)
+}
+
+
+/* panel content */
+
+.panel header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.panel h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #0f1724
+}
+
+.close-btn {
+    background: none;
+    border: 0;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.menu-list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #0f1724
+}
+
+.menu-list a:hover {
+    background: rgba(14, 165, 164, 0.06)
+}
+
+.small {
+    font-size: 13px;
+    color: #0a0b0b
+}
+
+
+/* animate the dots into an X when open */
+
+.menu-trigger.open .dot:nth-child(1) {
+    transform: translateY(6px) rotate(45deg)
+}
+
+.menu-trigger.open .dot:nth-child(2) {
+    opacity: 0
+}
+
+.menu-trigger.open .dot:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg)
+}
+
+
+/* responsive */
+
+@media (max-width:420px) {
+    .panel {
+        width: 86vw
     }
-    .panel{
-      position:fixed; top:0; right:0; height:100vh;
-      z-index: 9999;
-      background:linear-gradient(180deg,#fff,#f8fafc);
-      box-shadow:-20px 40px 80px rgba(2,6,23,0.12);
-      transform:translateX(110%);
-      transition:transform .35s cubic-bezier(.2,.9,.3,1);
-      padding:20px; display:flex; flex-direction:column; gap:12px;
-      border-left:1px solid rgba(2,6,23,0.04);
-    }
-
-    /* Active state */
-    .overlay.open{opacity:1; pointer-events:auto}
-    .panel.open{transform:translateX(0)}
-
-    /* panel content */
-    .panel header{display:flex; align-items:center; justify-content:space-between}
-    .panel h3{margin:0; font-size:16px; color:#0f1724}
-    .close-btn{background:none;border:0;font-size:20px;cursor:pointer;padding:6px}
-
-    .menu-list{list-style:none;padding:0;margin:8px 0 0 0;display:flex;flex-direction:column;gap:8px}
-    .menu-list a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;text-decoration:none;color:#0f1724}
-    .menu-list a:hover{background:rgba(14,165,164,0.06)}
-
-    .small{font-size:13px;color:#475569}
-
-    /* animate the dots into an X when open */
-    .menu-trigger.open .dot:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .menu-trigger.open .dot:nth-child(2){opacity:0}
-    .menu-trigger.open .dot:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-    /* responsive */
-    @media (max-width:420px){.panel{width:86vw}}
+}
 
   
+
 
