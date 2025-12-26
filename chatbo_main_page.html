@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kindred AI.com</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="chatbo_main_page.css">
-    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="bot.css">
+    <link rel="stylesheet" href="botmenu.css">
 </head>
 
 <body>
@@ -18,8 +18,7 @@
 
         <!-- Trigger (three vertical dots) -->
 
-        <button class="menu-trigger" id="menuTrigger" aria-expanded="false" aria-controls="threeDotPanel"
-            title="Open menu">
+        <button class="menu-trigger" id="menuTrigger" aria-expanded="false" aria-controls="threeDotPanel" title="Open menu">
             <span class="dots" aria-hidden="true">
                 <span class="dot"></span>
                 <span class="dot"></span>
@@ -31,29 +30,39 @@
         <div class="overlay" id="overlay"></div>
 
         <!-- Sliding panel -->
-        <aside class="panel" id="threeDotPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle"
-            style="display: flex; flex-direction: column; height: 100vh;">
+        <aside class="panel" id="threeDotPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" style="display: flex; flex-direction: column; height: 100vh;">
             <header>
                 <h3 id="panelTitle">Quick Menu</h3>
                 <button class="close-btn" id="closeBtn" aria-label="Close menu">✕</button>
             </header>
 
             <nav style="flex-grow: 1; display: flex; flex-direction: column;">
- <ul class="menu-list" style="flex-grow: 1;">
+                <ul class="menu-list" style="flex-grow: 1;">
                     <li><a href="#profile">👤 Profile</a></li>
 
                     <li onclick="toggleList()" style="cursor:pointer;">
-                        🧑‍🚀 Characters
-                        <ul id="characterlist" class="sub-list">
-                            <li><a href="#Bob">👱Bob (Mental Health)</a></li>
-                            <li><a href="#Sara">👩‍🦰Sara (English Learning)</a></li>
-                            <li><a href="#Cristiana">👩‍💼Cristiana (The Strategist)</a></li>
-                            <li><a href="#Aryan">👨‍🏫Aryan (The Historian)</a></li>
-                            <li><a href="#Maya">👩‍🎨Maya (The Creative)</a></li>
-                            <li><a href="#Amar">👨‍💻Amar (The Technologist)</a></li>
-                        </ul>
+                        <div class="dropdown-container" id="companionDropdownContainer">
+                            <span class="material-icons input-icon" id="toolsIcon">🧑‍🚀 Characters</span>
+                            <div class="dropdown-content" id="companionDropdown">
+                                <div class="dropdown-title">Select your companion</div>
+                                <div class="dropdown-item selected" data-char="None">Standard AI</div>
+                                <div class="dropdown-item" data-char="Bob">👱Bob</div>
+                                <div class="dropdown-item" data-char="Sara">👩Sara</div>
+                                <div class="dropdown-item" data-char="Cristiana">👩‍💼Cristiana</div>
+                                <div class="dropdown-item" data-char="Aryan">👨Aryan</div>
+                                <div class="dropdown-item" data-char="Maya">👩Maya</div>
+                                <div class="dropdown-item" data-char="Amar">👨Amar</div>
+                            </div>
+                        </div>
                     </li>
-
+                    <li>
+                        <li>
+                            <a href="javascript:void(0)" id="startSpeakingMode" style="display: flex; align-items: center; gap: 10px;">
+                                <span class="material-icons">record_voice_over</span> Speaking Mode
+                            </a>
+                        </li>
+                    </li>
+                    <li><a href="#help">👩‍🏫English learning Mode</a></li>
                     <li><a href="#help">❓Help & feedback</a></li>
                     <li><a href="#settings">⚙️ Settings</a></li>
                 </ul>
@@ -63,75 +72,141 @@
                 </ul>
             </nav>
 
-            <div style="padding: 90px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0;">
+            <div style="padding: 90px; font-size: 13px; color: #3d4249; border-top: 1px solid #e2e8f0;">
                 Version 1.0
             </div>
         </aside>
     </header>
 
-    <d iv class="chat-container" id="chatContainer">
+    <div class="chat-container" id="chatContainer">
         <div class="message-row bot-row" style="animation-delay: 0.1s;">
             <div class="message-bubble" id="initialBotMessage">
                 Hi
             </div>
         </div>
-        </div>
+    </div>
 
-        <footer class="input-bar-wrapper">
-            <div class="input-bar">
+    <footer class="input-bar-wrapper">
+        <div class="input-bar">
 
-                <div class="dropdown-container" id="companionDropdownContainer">
-                    <span class="material-icons input-icon" id="toolsIcon">tune</span>
-                    <div class="dropdown-content" id="companionDropdown">
-                        <div class="dropdown-title">Select your companion</div>
-                        <div class="dropdown-item selected" data-char="None">Standard AI</div>
-                        <div class="dropdown-item" data-char="Bob">Bob (Mental Health)</div>
-                        <div class="dropdown-item" data-char="Sara">Sara (English Learning)</div>
-                        <div class="dropdown-item" data-char="Cristiana">Cristiana (The Strategist)</div>
-                        <div class="dropdown-item" data-char="Aryan">Aryan (The Historian)</div>
-                        <div class="dropdown-item" data-char="Maya">Maya (The Creative)</div>
-                        <div class="dropdown-item" data-char="Amar">Amar (The Technologist)</div>
-                    </div>
-                </div>
 
-                <textarea class="input-field" id="messageInput" placeholder="Ask your companion..." rows="1"></textarea>
-                <div class="send-icon">
-                    <span class="material-icons input-icon" id="sendButton">send</span>
-                </div>
-                <div class="mic-icons">
-                    <span class="material-icons input-icon" id="micIcon">mic</span>
-                </div>
 
-                <div class="mode-container" id="modeDropdownContainer">
-                    <div class="mode-display" id="modeDisplay">
-                        <span id="currentMode">Fast</span>
-                        <span class="material-icons">arrow_drop_down</span>
-                    </div>
-                    <div class="mode-content" id="modeDropdown">
-                        <div class="dropdown-item selected" data-mode="Fast">Fast</div>
-                        <div class="dropdown-item" data-mode="Balanced">Balanced</div>
-                        <div class="dropdown-item" data-mode="Detailed">Detailed</div>
-                    </div>
-                </div>
-
+            <textarea class="input-field" id="messageInput" placeholder="Ask your companion..." rows="1"></textarea>
+            <div class="send-icon">
+                <span class="material-icons input-icon" id="sendButton">send</span>
             </div>
-        </footer>
-        <script src="chatbo_main_page.js"></script>
-        <script src="menu.js"></script>
-//for characters 
-            <script>
+            <div class="mic-icons">
+                <span class="material-icons input-icon" id="micIcon">mic</span>
+            </div>
+
+            <div class="mode-container" id="modeDropdownContainer">
+                <div class="mode-display" id="modeDisplay">
+                    <span id="currentMode">Fast</span>
+                    <span class="material-icons">arrow_drop_down</span>
+                </div>
+                <div class="mode-content" id="modeDropdown">
+                    <div class="dropdown-item selected" data-mode="Fast">Fast</div>
+                    <div class="dropdown-item" data-mode="Balanced">Balanced</div>
+                    <div class="dropdown-item" data-mode="Detailed">Detailed</div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="bot.js"></script>
+    <script src="botmenu.js"></script>
+
+    <script>
         function toggleList() {
-            const list = document.getElementById("characterlist");
+            const list = document.getElementById("companionDropdown");
 
             if (list.style.display === "block") {
-                list.style.display = "none"; // hide
+                list.style.display = "none"; // hide// for character list
             } else {
                 list.style.display = "block"; // show
             }
         }
     </script>
+
+
+    <!--for voice assistant!-->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. SELECT THE ELEMENTS
+            const speakModeBtn = document.getElementById("startSpeakingMode");
+            const micBtn = document.getElementById("micIcon");
+            const inputField = document.getElementById("messageInput");
+
+            // 2. SETUP SPEECH TOOLS
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = "en-US";
+
+            const synth = window.speechSynthesis;
+            let isSpeakingMode = false;
+
+            // 3. THE "TALK BACK" FUNCTION
+            function askAI(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                // When AI starts talking, stop the red pulse
+                utterance.onstart = () => {
+                    micBtn.parentElement.classList.remove("active");
+                };
+
+                // When AI finishes talking, start listening again automatically
+                utterance.onend = () => {
+                    if (isSpeakingMode) {
+                        recognition.start();
+                        micBtn.parentElement.classList.add("active");
+                    }
+                };
+
+                synth.speak(utterance);
+            }
+
+            // 4. THE MENU BUTTON CLICK
+            speakModeBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                isSpeakingMode = !isSpeakingMode; // Toggle mode On/Off
+
+                if (isSpeakingMode) {
+                    speakModeBtn.style.color = "red"; // Visual cue in menu
+                    recognition.start();
+                    micBtn.parentElement.classList.add("active");
+                    askAI("Speaking mode activated. I am listening.");
+                } else {
+                    speakModeBtn.style.color = "";
+                    isSpeakingMode = false;
+                    recognition.stop();
+                    synth.cancel();
+                    micBtn.parentElement.classList.remove("active");
+                }
+            });
+
+            // 5. HANDLE THE VOICE RESULT
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                inputField.value = transcript;
+
+                // Example logic:
+                let reply = "I heard you say " + transcript;
+                if (transcript.toLowerCase().includes("hello")) {
+                    reply = "Hello! How can I help you today?";
+                }
+
+                askAI(reply);
+            };
+
+            // Auto-restart if silence happens
+            recognition.onend = () => {
+                if (isSpeakingMode && !synth.speaking) {
+                    recognition.start();
+                }
+            };
+        });
+    </script>
 </body>
 
 
 </html>
-
