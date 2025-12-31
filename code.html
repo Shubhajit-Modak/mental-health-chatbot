@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>English Tutor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+  }
+
+  header {
+    background: #1e40af;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  /* Chat container holds messages above input */
+  .chat-container {
+    position: absolute;
+    left: 50%;
+    top: 60px; /* below header */
+    bottom: 80px; /* space for input bar */
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column; /* start messages from top */
+    gap: 6px;
+    width: 60%; /* same width as input bar */
+    max-height: calc(100vh - 140px); /* leave space for header + input */
+    overflow-y: auto;
+  }
+
+  .message {
+    display: inline-block;
+    max-width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+  .user { background: #2563eb; color: white; align-self: flex-end; }
+  .bot { background: #e5e7eb; color: black; align-self: flex-start; }
+
+  /* Input wrapper fixed at bottom */
+  .input-wrapper {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 60%;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 8px 12px;
+    z-index: 10;
+  }
+
+  #input {
+    flex: 1;
+    min-height: 40px;
+    max-height: 120px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  #input:empty::before {
+    content: "Type your English sentence...";
+    color: #94a3b8;
+    pointer-events: none;
+  }
+
+  #sendBtn, .circle-btn.mic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #sendBtn { background: black; color: white; }
+  #sendBtn:hover { background: gray; }
+  .circle-btn.mic { background: transparent; }
+  .circle-btn.mic svg { width: 24px; height: 24px; fill: black; }
+  .circle-btn.mic.listening svg { fill: #16a34a; }
+
+  /* Menu panel (unchanged) */
+  .menu-trigger{
+    position: absolute; top:10px; right:10px; width:35px; height:35px;
+    border-radius:10px; background:var(--panel); display:flex;
+    align-items:center; justify-content:center; border:1px solid rgba(15,23,42,0.06); cursor:pointer;
+  }
+  .dots{ display:flex; flex-direction:column; gap:4px; width:6px; align-items:center; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:rgb(155,155,155); transition:transform .70s ease, opacity .25s ease; }
+  .overlay{ position:fixed; inset:0; background:rgba(2,6,23,0.4); opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  .panel{ position:fixed; top:0; right:0; height:100vh; z-index:9999; background:linear-gradient(180deg,#fff,#f8fafc);
+          box-shadow:-20px 40px 80px rgba(2,6,23,0.12); transform:translateX(110%); transition:transform .35s cubic-bezier(.2,.9,.3,1);
+          padding:20px; display:flex; flex-direction:column; gap:12px; border-left:1px solid rgba(2,6,23,0.04); }
+  .overlay.open{opacity:1; pointer-events:auto}
+  .panel.open{transform:translateX(0)}
+  @media (max-width:420px){.panel{width:86vw}}
+</style>
+</head>
+<body>
+
+<header>📘 Learn English with Kindred Tutor</header>
+
+<div class="chat-container" id="chat"></div>
+
+<div class="input-wrapper">
+    <span id="input" contenteditable="true" role="textbox" aria-label="Type your message"></span>
+    <button class="circle-btn mic" onclick="startVoice()" title="Voice input">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <rect x="24" y="8" width="16" height="32" rx="8" ry="8"/>
+            <path d="M20 28v4a12 12 0 0 0 24 0v-4" stroke="black" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <line x1="32" y1="40" x2="32" y2="56" stroke="black" stroke-width="4" stroke-linecap="round"/>
+            <line x1="24" y1="56" x2="40" y2="56" stroke="black" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+    </button>
+    <button id="sendBtn" title="Send message" aria-label="Send message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+    </button>
+</div>
+
+<button class="menu-trigger" id="menuTrigger" aria-expanded="false" aria-controls="threeDotPanel" title="Open menu">
+    <span class="dots" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </span>
+</button>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="panel" id="threeDotPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+    <header>
+        <h3 id="panelTitle">Quick Menu</h3>
+        <button class="close-btn" id="closeBtn" aria-label="Close menu">✕</button>
+    </header>
+    <nav style="flex-grow:1; display:flex; flex-direction:column;">
+        <ul class="menu-list" style="flex-grow:1;">
+            <li><a href="#help">❓Help & feedback</a></li>
+            <li><a href="#settings">⚙ Settings</a></li>
+        </ul>
+        <ul class="menu-list">
+            <li><a href="#logout" style="color:#ef4444;">🚫 Log out</a></li>
+        </ul>
+    </nav>
+    <div style="padding:90px; font-size:13px; color:#64748b; border-top:1px solid #e2e8f0;">Version 1.0</div>
+</aside>
+
+<script>
+const chat = document.getElementById("chat");
+const inputSpan = document.getElementById("input");
+const sendBtn = document.getElementById("sendBtn");
+
+// Auto-grow input
+function autoGrow(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+}
+inputSpan.addEventListener("input", () => autoGrow(inputSpan));
+autoGrow(inputSpan);
+
+// Add message
+function addMessage(text, sender) {
+    const msg = document.createElement("div");
+    msg.className = "message " + sender;
+    msg.innerText = text;
+    chat.appendChild(msg); // append at bottom (top of chat container is top of page)
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// Bot reply logic
+function getBotReply(text) {
+    text = text.toLowerCase();
+    if (text.includes("hello") || text.includes("hi")) return "Hello! How are you today?";
+    if (text.includes("how are you")) return "I’m doing great! How about you?";
+    if (text.includes("meaning of")) return "Please tell me the word you want the meaning of.";
+    if (text.includes("grammar")) return "Sure! Tell me the sentence, and I’ll help correct it.";
+    if (text.includes("tense")) return "English has present, past, and future tenses. Which one do you want to learn?";
+    if (text.includes("thank")) return "You’re welcome! Keep practicing your English!";
+    return "Good question! Can you explain a little more?";
+}
+
+// Send message
+function send() {
+    const text = inputSpan.innerText.trim();
+    if (!text) return;
+    addMessage(text, "user");
+    inputSpan.innerText = "";
+    autoGrow(inputSpan);
+    setTimeout(() => { addMessage(getBotReply(text), "bot"); }, 600);
+}
+
+sendBtn.addEventListener("click", send);
+inputSpan.addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); send(); } });
+
+// Voice input
+function startVoice() {
+    if (!("webkitSpeechRecognition" in window)) return alert("Voice input not supported");
+    const micBtn = document.querySelector(".circle-btn.mic");
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    micBtn.classList.add("listening");
+    recognition.start();
+    recognition.onresult = e => { inputSpan.innerText = e.results[0][0].transcript; autoGrow(inputSpan); };
+    recognition.onend = recognition.onerror = () => micBtn.classList.remove("listening");
+}
+
+// Initial bot message
+addMessage("Hello! 👋 I’m your English tutor. Ask me about vocabulary, grammar, or start a conversation.", "bot");
+
+// Menu panel
+const menuTrigger = document.getElementById("menuTrigger");
+const panel = document.getElementById("threeDotPanel");
+const overlay = document.getElementById("overlay");
+const closeBtn = document.getElementById("closeBtn");
+
+menuTrigger.addEventListener("click", () => {
+  panel.classList.toggle("open");
+  overlay.classList.toggle("open");
+  menuTrigger.classList.toggle("open");
+});
+closeBtn.addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+sendBtn.addEventListener("click", closeMenu);
+
+function closeMenu() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  menuTrigger.classList.remove("open");
+}
+</script>
+
+</body>
+</html>
+
